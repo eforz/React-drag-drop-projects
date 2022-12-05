@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import { Colors } from '../models/colors';
 import { IProjectProps } from './../interfaces/IProjectProps';
@@ -11,6 +11,13 @@ const StyledProject = styled.div`
     background: ${Colors.CONTAINER};
 `
 const Project: FC<IProjectProps> = ({title, subtitle}) => {
+
+  const [modal, setModal] = useState(false)
+  
+  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    setModal(!modal)
+  }
+
   return (
     <StyledProject>
       <FlexContainer justify='space-between'>
