@@ -20,7 +20,6 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible}) => {
     const [subtitle, setSubtitle] = useState<string>('')
 
     const dispatch = useAppDispatch()
-    const projects = useAppSelector(state => state.projectsReducer.projects)
     
     const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
