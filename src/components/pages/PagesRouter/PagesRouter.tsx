@@ -8,7 +8,7 @@ const PagesRouter = () => {
   return (
     <Routes>
         <Route path='/' element={<ProjectsPage/>}> </Route>
-        <Route path='/project' element={<ProjectPage/>}> </Route>
+        <Route path='/project/:id' element={<ProjectPage/>}> </Route>
     </Routes>
   )
 }

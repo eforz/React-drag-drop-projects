@@ -5,4 +5,5 @@ export interface IHeaderProps {
     button?: ReactNode;
     input?: ReactNode;
     widthProps?:string;
+    children?: ReactNode
 }

@@ -29,6 +29,7 @@ const StyledModal = styled.div`
     color: black;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 20px;
 `

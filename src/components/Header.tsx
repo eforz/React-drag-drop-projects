@@ -6,6 +6,7 @@ import Button from './Button'
 import FlexContainer from './FlexContainer'
 import { Colors } from '../models/colors'
 import Modal from './Modal'
+import HeaderConstructor from './Constructors/HeaderConstructor'
 
 const StyledHeader = styled.header<IHeaderProps>`
     display:flex;
@@ -24,17 +25,17 @@ const StyledHeader = styled.header<IHeaderProps>`
 const Header: FC<IHeaderProps> = (props) => {
 
   const [modal, setModal] = useState(false)
-
-  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+  const clickHandler = () => {
     setModal(!modal)
   }
 
   return (
     <StyledHeader {...props}>
-        <Modal visible={modal} setVisible={clickHandler}>Шо тута у нас</Modal>
+        <Modal visible={modal} setVisible={clickHandler}><HeaderConstructor setVisible={clickHandler}></HeaderConstructor></Modal>
         <h1>{props.title}</h1>
         <FlexContainer gap='10px' justify='center'>
-            <Input placeholder='Search by project name' type='text'/>
+            {/* <Input placeholder='1 Search by project name' type='text'/> */}
+            {props.children}
             <Button onClick={clickHandler}>Create</Button>
         </FlexContainer>
     </StyledHeader>
