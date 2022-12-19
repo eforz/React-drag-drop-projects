@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { useAppSelector } from '../../hooks/redux'
 import Button from '../Button'
 import Input from '../Input'
-import { IProjectProps } from './../../interfaces/IProjectProps';
 import { useAppDispatch } from './../../hooks/redux';
 import { projectsSlice } from '../../store/reducers/projectsSlice'
 import { IProjectConstructorProps } from '../../interfaces/IProjectConstructorProps'
