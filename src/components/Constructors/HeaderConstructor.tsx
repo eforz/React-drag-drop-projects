@@ -41,7 +41,6 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible}) => {
             title: title,
             subtitle: subtitle,
         }
-        console.log(newProject)
 
         if (title) {
             addProject(newProject)
