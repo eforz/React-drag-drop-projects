@@ -25,7 +25,6 @@ export const projectsSlice = createSlice(
                 state.projects = []
             }
         },
-
         addProject(state, action:PayloadAction<IProjectProps>) {
             state.projects.push(action.payload);
         },
@@ -45,7 +44,6 @@ export const projectsSlice = createSlice(
                 findProject.subtitle = action.payload.subtitle
             }
         },
-
     }
 
 },)
