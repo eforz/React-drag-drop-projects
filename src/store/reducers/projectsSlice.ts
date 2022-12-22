@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IProjectProps } from './../../interfaces/IProjectProps';
-
+import { ITask } from './../../interfaces/ITask';
 
 interface ProjectsState {
     projects: IProjectProps[],
+    tasks: ITask[]
 }
 
 const initialState: ProjectsState = {
     projects: [],
+    tasks:[]
 }
 
 export const projectsSlice = createSlice(
@@ -42,6 +44,40 @@ export const projectsSlice = createSlice(
             const findProject = state.projects.find(item => item.id === action.payload.id)
             if (findProject){
                 findProject.subtitle = action.payload.subtitle
+            }
+        },
+
+        addTaskToLocalStorage(state) {
+            localStorage.setItem('Tasks', JSON.stringify(state.tasks))
+        },
+        getTasksFromLocalStorage(state) {
+            state.tasks = JSON.parse(localStorage.getItem('Tasks')!)
+            if (state.tasks == null || undefined) {
+                state.tasks = []
+            }
+        },
+        addTask(state, action:PayloadAction<ITask>) {
+            state.tasks.push(action.payload)
+        },
+        removeTask(state, action:PayloadAction<ITask>) {
+            state.tasks = state.tasks.filter(item => item.id !== action.payload.id)
+        },
+        changeTaskTitle(state, action:PayloadAction<ITask>) {
+            const findTask = state.tasks.find(item => item.id === action.payload.id)
+            if (findTask) {
+                findTask.title = action.payload.title
+            }
+        },
+        changeTaskSubitle(state, action:PayloadAction<ITask>) {
+            const findTask = state.tasks.find(item => item.id === action.payload.id)
+            if (findTask) {
+                findTask.subtitle = action.payload.subtitle
+            }
+        },
+        changeTaskStatus(state, action:PayloadAction<ITask>) {
+            const findTask = state.tasks.find(item => item.id === action.payload.id)
+            if (findTask) {
+                findTask.status = action.payload.status
             }
         },
     }

@@ -2,9 +2,9 @@ import React, { FC } from 'react'
 import styled from 'styled-components';
 import { IButtonProps } from './../interfaces/IButtonProps';
 
-const StyledButton = styled.div`
-    width: 120px;
-    padding: 8px;
+const StyledButton = styled.div<IButtonProps>`
+    width: ${props => props.widthProps || '120px'} ;
+    padding:${props => props.paddingProps || '8px'};
     border: 2px solid #fff;
     text-align: center;
     border-radius: 30px;

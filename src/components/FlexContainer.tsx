@@ -12,7 +12,7 @@ const StyledFlexContainer = styled.div<IFlexContainerProps>`
     justify-content: ${props => props.justify || 'stretch'} ;
     gap: ${props => props.gap || 'stretch'} ;
     margin: ${({margin}) => margin || '0'} ;
-    padding:10px;
+    padding:${props => props.paddingProps || '10px'};
 `
 const FlexContainer: FC<IFlexContainerProps> = (props) => {
   return <StyledFlexContainer {...props}>{props.children}</StyledFlexContainer>

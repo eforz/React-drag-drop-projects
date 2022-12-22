@@ -21,7 +21,7 @@ const StyledHeader = styled.header<IHeaderProps>`
 const ProjectHeader:FC<IProjectHeaderProps> = ({currentProject}) => {
     const navigate = useNavigate();
     const clickHandler = () => {
-        navigate('/projects')
+        navigate('/')
     }
 
   return (

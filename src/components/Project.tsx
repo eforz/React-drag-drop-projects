@@ -33,13 +33,17 @@ const Project: FC<IProjectProps> = ({title, subtitle, id}) => {
     setModal(!modal)
   }
 
+  if (!id) {
+    return null 
+  }
+
   return (
     <StyledProject >
       <Modal visible={modal} setVisible={clickHandler}><ProjectConstructor id={id} setVisible={clickHandler} projectTitle={title} projectSubtitle={subtitle}></ProjectConstructor></Modal>
       <div onClick={navigateClick}>
         <FlexContainer justify='space-between'>
           <h1>{title}</h1>
-          <Button onClick={btnClickHandler}>Конструктор</Button>
+          <Button onClick={btnClickHandler}>Редактировать</Button>
         </FlexContainer>
         <FlexContainer>
           <p>{subtitle}</p>
