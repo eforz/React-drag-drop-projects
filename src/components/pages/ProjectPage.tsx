@@ -18,18 +18,12 @@ const ProjectPage = () => {
   console.log(params.id)
 
   const projects:IProjectProps[] = JSON.parse(localStorage.getItem('Projects')!)
-  console.log(projects)
-
   const currentProject = projects.find(item => item.id == params.id)
   
-
-  
-  
-
   return (
     <FlexContainer margin='0 auto' direction='column' justify='center' align='center' widthProps='80%'>
       <ProjectHeader widthProps='100%' currentProject={currentProject}></ProjectHeader>
-      <ColumsWrapper></ColumsWrapper>
+      <ColumsWrapper currentProject={currentProject}></ColumsWrapper>
     </FlexContainer>
   )
 }

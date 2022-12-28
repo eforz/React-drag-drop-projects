@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { IProjectProps } from "./IProjectProps";
 
 export interface IHeaderProps {
     title?: string;
@@ -6,4 +7,5 @@ export interface IHeaderProps {
     input?: ReactNode;
     widthProps?:string;
     children?: ReactNode
+    currentProject?: IProjectProps | undefined;
 }

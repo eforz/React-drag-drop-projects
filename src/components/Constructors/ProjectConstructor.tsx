@@ -35,7 +35,8 @@ const ProjectConstructor: FC<IProjectConstructorProps> = ({setVisible, projectTi
             const changedProject = {
                 id: findedProject.id,
                 title: title,
-                subtitle: subtitle
+                subtitle: subtitle,
+                tasks: null,
             }
             dispatch(projectsSlice.actions.changeTitle(changedProject))
             dispatch(projectsSlice.actions.changeSubtitle(changedProject))
@@ -50,6 +51,7 @@ const ProjectConstructor: FC<IProjectConstructorProps> = ({setVisible, projectTi
 
   return (
     <StyledConstructor>
+        <h2>Редактирование</h2> <br />
         <h4>Введите новое название проекта</h4>
         <Input type='text' placeholder='Введите новое название проекта' value={title} onChange={titleChangeHandler}></Input>
         <h4>Введите новое описание проекта</h4>

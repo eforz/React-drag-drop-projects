@@ -8,4 +8,5 @@ export interface IFlexContainerProps {
     heightProps?: string;
     gap?:string;
     maxwidthProps?:string;
+    paddingProps?: string;
 }
