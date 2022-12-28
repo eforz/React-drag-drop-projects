@@ -50,6 +50,9 @@ export const projectsSlice = createSlice(
         addTaskToLocalStorage(state) {
             localStorage.setItem('Tasks', JSON.stringify(state.tasks))
         },
+        addTasksToLocalStorage(state, action:PayloadAction<ITask>) {
+            localStorage.setItem('Tasks', JSON.stringify(action.payload))
+        },
         getTasksFromLocalStorage(state) {
             state.tasks = JSON.parse(localStorage.getItem('Tasks')!)
             if (state.tasks == null || undefined) {

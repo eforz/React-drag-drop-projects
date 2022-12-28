@@ -22,5 +22,11 @@ export interface ITask {
     setCurrentItem?: any;
     setBoards?: any;
     boards?: IBoard[];
+
+    onDragOverHandler?: any;
+    onDragLeaveHandler?: any;
+    onDragStartHandler?: any;
+    onDragEndHandler?: any;
+    onDropHandler?: any;
 // null | IBoard | 
 }

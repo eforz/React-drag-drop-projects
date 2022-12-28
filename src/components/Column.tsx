@@ -16,10 +16,10 @@ const StyledColumn = styled.div`
 `
 
 
-const Column:FC<IColumnProps> = ({children, title, currentProject}) => {
+const Column:FC<IColumnProps> = ({children, title, currentProject, onDragOverHandler, onDropHandler}) => {
   return (
-    <StyledColumn>
-        <ColumnHeader title={title} currentProject={currentProject}/>
+    <StyledColumn onDragOver={onDragOverHandler} onDrop={onDropHandler}>
+        <ColumnHeader title={title} currentProject={currentProject} />
         {children}
     </StyledColumn>
   )

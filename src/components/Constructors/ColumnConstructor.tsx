@@ -55,9 +55,9 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
             doneDate: null
         }
 
-        if (title) {
-            addTask(newTask)
-        }
+         
+        addTask(newTask)
+        
 
         setTitle('')
         setSubtitle('')
