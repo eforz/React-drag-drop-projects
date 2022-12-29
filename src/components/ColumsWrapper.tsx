@@ -13,39 +13,16 @@ import { Colors } from '../models/colors';
 const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
 
   const dispatch = useAppDispatch()
-  let tasks = useAppSelector(state => state.projectsReducer.tasks)
-  if (tasks.length <= 0) {
-    tasks = JSON.parse(localStorage.getItem('Tasks')!)
-  }
+  const boards = useAppSelector(state => state.projectsReducer.boards)
+  const tasks = useAppSelector(state => state.projectsReducer.tasks)
+
   useEffect( () => {
     dispatch(projectsSlice.actions.getTasksFromLocalStorage())
+    dispatch(projectsSlice.actions.setCurrentBoardsTasks(currentProject?.id))
+    // dispatch(projectsSlice.actions.setBoardTasksToLocal());
   }, [])
 
-  const currentProjectTasks = tasks.filter(item => item.projectId === currentProject?.id)
   
-  const quequeTasks:ITask[] = currentProjectTasks.filter(task => task.status == 'queque')
-  const inProgressTasks:ITask[] = currentProjectTasks.filter(task => task.status == 'inProgress')
-  const doneTasks:ITask[] = currentProjectTasks.filter(task => task.status == 'done')
-
-  console.log(quequeTasks)
-
-  const [boards, setBoards] = useState<IBoard[]>([
-    {id:1, title:'Queque', status: 'queque', items: quequeTasks},
-    {id:2, title:'In Progress', status: 'inProgress', items: inProgressTasks},
-    {id:3, title:'Done', status: 'done', items: doneTasks}
-  ])
-
-  useEffect( () => {
-    setAllBoardsTasks()
-  }, [boards])
-
-  function setAllBoardsTasks() {
-    const quequeTasks = boards[0].items
-    const inProgressTasks = boards[1].items
-    const doneTasks = boards[2].items
-    const allTasks = [...quequeTasks, ...inProgressTasks, ...doneTasks]
-    localStorage.setItem('Tasks', JSON.stringify(allTasks))
-  }
 
   const [currentBoard, setCurrentBoard] = useState<any>(null)
   const [currentItem, setCurrentItem] = useState<any>(null)
@@ -76,47 +53,37 @@ const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
         e.preventDefault()
         e.stopPropagation()
         const currentIndex = currentBoard.items.indexOf(currentItem)
-        currentBoard.items.splice(currentIndex, 1)
         const dropIndex = board.items.indexOf(item)
-        board.items.splice(dropIndex + 1, 0, currentItem)
-        setBoards(boards.map(b => {
-          if (b.id === board.id) {
-            return board
-          }
-          if (b.id === currentBoard.id) {
-            return currentBoard
-          }
-          
-          return b
-        }));
+        const action = {
+          id: board.id,
+          item: item,
+          dropIndex: dropIndex,
+          currentItem: currentItem,
+          currentBoard: currentBoard,
+          currentIndex: currentIndex,
+        }
+        dispatch(projectsSlice.actions.currentBoardSplice(action));
+        dispatch(projectsSlice.actions.boardSplice(action));
         (e.target as HTMLDivElement).style.boxShadow = 'none'
     }
 
   const dropTaskHandler = (e: React.DragEvent<HTMLDivElement>, board:any) => {
     e.preventDefault()
     e.stopPropagation()
-    board.items.push(currentItem);
-
-    const items = board.items
-    const itemsStatus = board.items.forEach((item:any) => {
-      item.status = board.status
-    })
-    console.log(items)
-    console.log(itemsStatus)
 
     const currentIndex = currentBoard?.items.indexOf(currentItem);
-    currentBoard.items.splice(currentIndex, 1);
-    setBoards(boards.map((b) =>{
-      if (b.id === board.id) {
-          return board
-      }
-      if (b.id === currentBoard?.id) {
-          return currentBoard
-      }
-      return b
-    }));
+    const action = {
+      id: board.id,
+      currentItem: currentItem,
+      currentBoard: currentBoard,
+      currentIndex: currentIndex,
+    }
+    
+    dispatch(projectsSlice.actions.setItemToBoard(action));
+    dispatch(projectsSlice.actions.currentBoardSplice(action));
+    dispatch(projectsSlice.actions.changeItemStatus(action));
+    dispatch(projectsSlice.actions.setBoardTasksToLocal());
     (e.target as HTMLDivElement).style.boxShadow = 'none';
-
   }
 
 
@@ -131,7 +98,8 @@ const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
           onDragOverHandler={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)} 
           onDropHandler={(e: React.DragEvent<HTMLDivElement>) => dropTaskHandler(e, board)}
         >
-          {board.items? board.items.map(item => 
+          {
+          board.items.map(item => 
             <Task 
               id={item.id} 
               projectId={item.projectId} 
@@ -148,7 +116,8 @@ const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
               onDragEndHandler={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
               onDropHandler={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, board, item)}
             />
-          ) : <h2>Список пуст</h2>}
+          )
+          }
         </Column>  
       )}
         

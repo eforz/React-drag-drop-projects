@@ -37,13 +37,11 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
     };
 
     const addTask = (item:ITask) => {
-        dispatch(projectsSlice.actions.addTask(item))
-        dispatch(projectsSlice.actions.addTaskToLocalStorage())
+        dispatch(projectsSlice.actions.aaddTask(item))
+        dispatch(projectsSlice.actions.setBoardTasksToLocal())
     }
 
     const clickHandler = () => {
-        setVisible()
-
         const newTask:ITask = {
             id: performance.now(),
             projectId: currentProject?.id,
@@ -54,11 +52,8 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
             creationDate: Date(),
             doneDate: null
         }
-
-         
+        setVisible()
         addTask(newTask)
-        
-
         setTitle('')
         setSubtitle('')
     }
@@ -102,7 +97,6 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
                 <label htmlFor="radio-item-3"> Красный</label>
             </div>
         </FlexContainer>
-        
         <Button onClick={clickHandler}>Create</Button>
     </StyledConstructor>
   )
