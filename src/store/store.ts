@@ -1,6 +1,5 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-
 import projectsReducer from "./reducers/projectsSlice"
 
 const rootReducer = combineReducers({
