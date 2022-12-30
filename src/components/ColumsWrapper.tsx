@@ -13,15 +13,12 @@ const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
   const dispatch = useAppDispatch()
   const boards = useAppSelector(state => state.projectsReducer.boards)
   const clear = useAppSelector(state => state.projectsReducer.clear)
-  const tasks = useAppSelector(state => state.projectsReducer.tasks)
   const [currentBoard, setCurrentBoard] = useState<any>(null)
   const [currentItem, setCurrentItem] = useState<any>(null)
-  console.log(tasks)
-
 
   useEffect( () => {
     dispatch(projectsSlice.actions.clearBoards())
-    dispatch(projectsSlice.actions.getTasksFromLocalStorage())
+    dispatch(projectsSlice.actions.getTasksFromLocalStorage(currentProject?.id))
     dispatch(projectsSlice.actions.setCurrentBoardsTasks(currentProject?.id))
   }, [clear])
 
@@ -61,7 +58,7 @@ const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
     dispatch(projectsSlice.actions.currentBoardSplice(action));
     dispatch(projectsSlice.actions.boardSplice(action));
     dispatch(projectsSlice.actions.changeItemStatus(action));
-    dispatch(projectsSlice.actions.setBoardTasksToLocal());
+    dispatch(projectsSlice.actions.setBoardTasksToLocal(currentProject?.id));
     (e.target as HTMLDivElement).style.boxShadow = 'none'
   }
 
@@ -80,7 +77,7 @@ const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
     dispatch(projectsSlice.actions.setItemToBoard(action));
     dispatch(projectsSlice.actions.currentBoardSplice(action));
     dispatch(projectsSlice.actions.changeItemStatus(action));
-    dispatch(projectsSlice.actions.setBoardTasksToLocal());
+    dispatch(projectsSlice.actions.setBoardTasksToLocal(currentProject?.id));
     (e.target as HTMLDivElement).style.boxShadow = 'none';
   }
 
