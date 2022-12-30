@@ -7,6 +7,8 @@ import ProjectConstructor from './Constructors/ProjectConstructor';
 import FlexContainer from './FlexContainer';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { projectsSlice } from '../store/reducers/projectsSlice';
 
 const StyledProject = styled.div`
     width: 100%;
@@ -18,6 +20,8 @@ const StyledProject = styled.div`
     }
 `
 const Project: FC<IProjectProps> = ({title, subtitle, id}) => {
+  const dispatch = useAppDispatch()
+  const clear = useAppSelector(state => state.projectsReducer.clear)
 
   const navigate = useNavigate()
   const [modal, setModal] = useState(false)
@@ -38,7 +42,7 @@ const Project: FC<IProjectProps> = ({title, subtitle, id}) => {
   }
 
   return (
-    <StyledProject >
+    <StyledProject onClick={() => dispatch(projectsSlice.actions.clearBoards())}>
       <Modal visible={modal} setVisible={clickHandler}><ProjectConstructor id={id} setVisible={clickHandler} projectTitle={title} projectSubtitle={subtitle}></ProjectConstructor></Modal>
       <div onClick={navigateClick}>
         <FlexContainer justify='space-between'>

@@ -5,8 +5,9 @@ import { ITask } from './../../interfaces/ITask';
 
 interface ProjectsState {
     projects: IProjectProps[],
-    tasks: ITask[]
-    boards: IBoard[]
+    tasks: ITask[],
+    boards: IBoard[],
+    clear: boolean
 }
 
 const initialState: ProjectsState = {
@@ -16,7 +17,8 @@ const initialState: ProjectsState = {
         {id:1, title:'Queque', status: 'queque', items: []},
         {id:2, title:'In Progress', status: 'inProgress', items: []},
         {id:3, title:'Done', status: 'done', items: []}
-    ]
+    ],
+    clear: false
 }
 
 export const projectsSlice = createSlice(
@@ -61,7 +63,10 @@ export const projectsSlice = createSlice(
             localStorage.setItem('Tasks', JSON.stringify(action.payload))
         },
         getTasksFromLocalStorage(state) {
-            state.tasks = JSON.parse(localStorage.getItem('Tasks')!)
+            if (state.tasks.length <= 0) {
+                state.tasks = JSON.parse(localStorage.getItem('Tasks')!)
+            }
+            
             if (state.tasks == null || undefined) {
                 state.tasks = []
             }
@@ -97,6 +102,9 @@ export const projectsSlice = createSlice(
             state.tasks = action.payload
         },
 
+        clearBoards(state){
+            state.boards = initialState.boards
+        },
         getBoardsFromLoacalStorage(state){
             const boardsFromLocal = JSON.parse(localStorage.getItem('Tasks')!)
             if (state.boards == null || undefined) {
@@ -108,7 +116,9 @@ export const projectsSlice = createSlice(
             if (!state.tasks) {
                 state.tasks = initialState.tasks
             }
-            if (state.tasks) {
+            if (state.boards[0].items.length <= 0 &&
+                state.boards[1].items.length <= 0 &&
+                state.boards[2].items.length <= 0  ) {
                 const currentProjectTasks = state.tasks.filter(item => item.projectId === action.payload)
                 const quequeTasks:ITask[] = currentProjectTasks.filter(task => task.status == 'queque')
                 const inProgressTasks:ITask[] = currentProjectTasks.filter(task => task.status == 'inProgress')
@@ -146,10 +156,14 @@ export const projectsSlice = createSlice(
             const quequeTasks = state.boards[0].items
             const inProgressTasks = state.boards[1].items
             const doneTasks = state.boards[2].items
-            const allTasks = [...quequeTasks, ...inProgressTasks, ...doneTasks]
+            // const allTasks = [...state.tasks]
+            const allTasks = [...quequeTasks, ...inProgressTasks, ...doneTasks,]
             localStorage.setItem('Tasks', JSON.stringify(allTasks))
+        },
+        setClear(state){
+            state.clear = !state.clear
         }
-
+    
 
     }
 
