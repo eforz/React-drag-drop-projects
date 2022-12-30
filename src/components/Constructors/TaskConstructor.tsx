@@ -1,11 +1,10 @@
 import React, { FC, useState } from 'react'
 import styled from 'styled-components'
-import { IheaderConstructorProps } from '../../interfaces/IHeaderConstructorProps'
 import Button from '../Button'
 import Input from '../Input'
 import { useAppDispatch } from './../../hooks/redux';
 import { projectsSlice } from '../../store/reducers/projectsSlice'
-import { ITask } from './../../interfaces/ITask';
+import { ITaskConstructorProps } from './../../interfaces/ITaskConstructorProps';
 import FlexContainer from '../FlexContainer'
 
 const StyledConstructor = styled.div`
@@ -15,12 +14,11 @@ const StyledConstructor = styled.div`
     align-items: center;
     gap: 20px;
 `
-const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProject}) => {
+const TaskConstructor: FC<ITaskConstructorProps> = ({setVisible, id, color, status, taskSubtitle, taskTitle, projectId}) => {
     const dispatch = useAppDispatch()
-    const [title, setTitle] = useState<string>('')
-    const [subtitle, setSubtitle] = useState<string>('')
+    const [title, setTitle] = useState<string>(taskTitle)
+    const [subtitle, setSubtitle] = useState<string>(taskSubtitle)
     const [currentRadioValue, setCurrentRadioValue] = useState('green')
-
     const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
     }
@@ -31,32 +29,34 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
         setCurrentRadioValue(value)
     };
 
+    const changedTask = {
+        id: id,
+        projectId: projectId,
+        title: title,
+        subtitle: subtitle,
+        type: currentRadioValue,
+        status: status,
+        creationDate: Date(),
+        doneDate: null
+    }
+
     const clickHandler = () => {
-        const newTask:ITask = {
-            id: performance.now(),
-            projectId: currentProject?.id,
-            title: title,
-            subtitle: subtitle,
-            type: currentRadioValue,
-            status: 'queque',
-            creationDate: Date(),
-            doneDate: null
-        }
-        const addTask = (item:ITask) => {
-            dispatch(projectsSlice.actions.addTask(item))
-            dispatch(projectsSlice.actions.setBoardTasksToLocal(newTask.projectId))
-        }
         setVisible()
-        addTask(newTask)
-        setTitle('')
-        setSubtitle('')
+        dispatch(projectsSlice.actions.changeTaskInfo(changedTask))
+        dispatch(projectsSlice.actions.setBoardTasksToLocal(changedTask.projectId))
+    }
+
+    const deleteHandler = () => {
+        setVisible()
+        dispatch(projectsSlice.actions.deleteTask(changedTask))
+        dispatch(projectsSlice.actions.setBoardTasksToLocal(changedTask.projectId))
     }
 
   return (
     <StyledConstructor>
-        <h2>Создание таски</h2>
-        <Input type='text' placeholder='Введите название проекта' value={title} onChange={titleChangeHandler}></Input>
-        <Input type='text' placeholder='Введите описание проекта' value={subtitle} onChange={subtitleChangeHandler}></Input>
+        <h2>Изменение таски</h2>
+        <Input type='text' placeholder='Введите новое название' value={title} onChange={titleChangeHandler}></Input>
+        <Input type='text' placeholder='Введите новое описание' value={subtitle} onChange={subtitleChangeHandler}></Input>
         <h3>Select type:</h3>
         <FlexContainer widthProps='400px' direction='row' align='center' justify='space-around'>
             <div>   
@@ -91,9 +91,10 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
                 <label htmlFor="radio-item-3"> Красный</label>
             </div>
         </FlexContainer>
-        <Button onClick={clickHandler}>Create</Button>
+        <Button onClick={clickHandler}>Change</Button>
+        <Button onClick={deleteHandler}>DeleteTask</Button>
     </StyledConstructor>
   )
 }
 
-export default HeaderConstructor
+export default TaskConstructor

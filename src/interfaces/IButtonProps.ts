@@ -5,4 +5,7 @@ export interface IButtonProps {
     onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
     widthProps?: string;
     paddingProps?: string;
+    heightProps?: string;
+    borderColor?: string;
+    FontSizeProps?: string;
 }
