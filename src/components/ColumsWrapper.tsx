@@ -82,7 +82,7 @@ const ColumsWrapper:FC<IColumsWrapperProps> = ({currentProject, }) => {
   }
 
   return (
-    <FlexContainer widthProps='100%' gap='20px' margin='10px 0' direction='row' justify='space-around' align='center' paddingProps='10px 0'>
+    <FlexContainer widthProps='100%' gap='20px' margin='10px 0' direction='row' justify='space-around'  paddingProps='10px 0'>
       {boards.map(board => 
         <Column 
           title={board.title} 

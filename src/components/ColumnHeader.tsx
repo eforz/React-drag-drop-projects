@@ -12,9 +12,8 @@ const UnderLine = styled.span`
     height:1px;
     border: 2px solid ${Colors.BORDER};
 `
-
 const ColumnHeader:FC<IColumnProps> = ({title, currentProject}) => {
-    
+  
 const [modal, setModal] = useState(false)
   const modalClickHandler = () => {
     setModal(!modal)

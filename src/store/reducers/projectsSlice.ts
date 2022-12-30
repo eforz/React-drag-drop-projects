@@ -68,27 +68,6 @@ export const projectsSlice = createSlice(
         addTask(state, action:PayloadAction<ITask>) {
             state.boards[0].items.push(action.payload)
         },
-        removeTask(state, action:PayloadAction<ITask>) {
-            state.tasks = state.tasks.filter(item => item.id !== action.payload.id)
-        },
-        changeTaskTitle(state, action:PayloadAction<ITask>) {
-            const findTask = state.tasks.find(item => item.id === action.payload.id)
-            if (findTask) {
-                findTask.title = action.payload.title
-            }
-        },
-        changeTaskSubitle(state, action:PayloadAction<ITask>) {
-            const findTask = state.tasks.find(item => item.id === action.payload.id)
-            if (findTask) {
-                findTask.subtitle = action.payload.subtitle
-            }
-        },
-        changeTaskStatus(state, action:PayloadAction<ITask>) {
-            const findTask = state.tasks.find(item => item.id === action.payload.id)
-            if (findTask) {
-                findTask.status = action.payload.status
-            }
-        },
 
         clearBoards(state){
             state.boards = initialState.boards
@@ -99,9 +78,6 @@ export const projectsSlice = createSlice(
             if (!state.tasks) {
                 state.tasks = initialState.tasks
             }
-            if (state.boards[0].items.length <= 0 &&
-                state.boards[1].items.length <= 0 &&
-                state.boards[2].items.length <= 0  ) {
                 const currentProjectTasks = state.tasks.filter(item => item.projectId === action.payload)
                 const quequeTasks:ITask[] = currentProjectTasks.filter(task => task.status == 'queque')
                 const inProgressTasks:ITask[] = currentProjectTasks.filter(task => task.status == 'inProgress')
@@ -109,7 +85,6 @@ export const projectsSlice = createSlice(
                 state.boards[0].items.push(...quequeTasks)
                 state.boards[1].items.push(...inProgressTasks)
                 state.boards[2].items.push(...doneTasks)
-            }
         },
         setItemToBoard(state, action:PayloadAction<any>) {
             const boardToChange = state.boards.find(board => board.id === action.payload.id)
@@ -141,7 +116,37 @@ export const projectsSlice = createSlice(
         },
         setClear(state){
             state.clear = !state.clear
-        },    
+        },
+
+        addTaskToState(state, action:PayloadAction<any>){
+            state.tasks.push(action.payload)
+        },
+        
+        changeTaskInfo(state, action:PayloadAction<any>) {
+            const quequeTask = state.boards[0].items.find(item => item.id === action.payload.id)
+            const inProgressTask = state.boards[1].items.find(item => item.id === action.payload.id)
+            const doneTask = state.boards[2].items.find(item => item.id === action.payload.id)
+            if (quequeTask) {
+                quequeTask.title = action.payload.title
+                quequeTask.type = action.payload.type
+                quequeTask.subtitle = action.payload.subtitle
+            }
+            if (inProgressTask) {
+                inProgressTask.title = action.payload.title
+                inProgressTask.type = action.payload.type
+                inProgressTask.subtitle = action.payload.subtitle
+            }
+            if (doneTask) {
+                doneTask.title = action.payload.title
+                doneTask.type = action.payload.type
+                doneTask.subtitle = action.payload.subtitle
+            }
+        },
+        deleteTask(state, action:PayloadAction<any>){
+            state.boards[0].items = state.boards[0].items.filter(item => item.id !== action.payload.id)
+            state.boards[1].items = state.boards[1].items.filter(item => item.id !== action.payload.id)
+            state.boards[2].items = state.boards[2].items.filter(item => item.id !== action.payload.id)
+        }
     }
 
 },
