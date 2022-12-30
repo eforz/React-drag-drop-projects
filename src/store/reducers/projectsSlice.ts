@@ -56,15 +56,9 @@ export const projectsSlice = createSlice(
             }
         },
 
-        addTaskToLocalStorage(state) {
-            localStorage.setItem('Tasks', JSON.stringify(state.tasks))
-        },
-        addTasksToLocalStorage(state, action:PayloadAction<ITask[]>) {
-            localStorage.setItem('Tasks', JSON.stringify(action.payload))
-        },
-        getTasksFromLocalStorage(state) {
+        getTasksFromLocalStorage(state, action:PayloadAction<any>) {
             if (state.tasks.length <= 0) {
-                state.tasks = JSON.parse(localStorage.getItem('Tasks')!)
+                state.tasks = JSON.parse(localStorage.getItem(`${action.payload}`)!)
             }
             
             if (state.tasks == null || undefined) {
@@ -72,9 +66,6 @@ export const projectsSlice = createSlice(
             }
         },
         addTask(state, action:PayloadAction<ITask>) {
-            state.tasks.push(action.payload)
-        },
-        aaddTask(state, action:PayloadAction<ITask>) {
             state.boards[0].items.push(action.payload)
         },
         removeTask(state, action:PayloadAction<ITask>) {
@@ -98,21 +89,13 @@ export const projectsSlice = createSlice(
                 findTask.status = action.payload.status
             }
         },
-        addSortedTasks(state, action:PayloadAction<ITask[]>) {
-            state.tasks = action.payload
-        },
 
         clearBoards(state){
             state.boards = initialState.boards
+            state.tasks = initialState.tasks
         },
-        getBoardsFromLoacalStorage(state){
-            const boardsFromLocal = JSON.parse(localStorage.getItem('Tasks')!)
-            if (state.boards == null || undefined) {
-                state.boards = initialState.boards
-            }
-        },
+
         setCurrentBoardsTasks(state, action: PayloadAction<string | number | undefined>) {
-            // state.tasks = JSON.parse(localStorage.getItem('Tasks')!)
             if (!state.tasks) {
                 state.tasks = initialState.tasks
             }
@@ -136,12 +119,9 @@ export const projectsSlice = createSlice(
             const board = state.boards.find((board) => board.id === action.payload.id)
             board?.items.splice(action.payload.dropIndex + 1, 0, action.payload.currentItem)
         },
-
         currentBoardSplice(state, action:PayloadAction<any>) {
             const board = state.boards.find((board) => board.id === action.payload.currentBoard.id)
             board?.items.splice(action.payload.currentIndex, 1)
-
-            // currentBoard.items.splice(currentIndex, 1);
         },
         setBoards(state, action:PayloadAction<any>) {
             state.boards = action.payload
@@ -152,19 +132,16 @@ export const projectsSlice = createSlice(
                 item.status = board.status
             })
         },
-        setBoardTasksToLocal(state) {
+        setBoardTasksToLocal(state, action:PayloadAction<any>) {
             const quequeTasks = state.boards[0].items
             const inProgressTasks = state.boards[1].items
             const doneTasks = state.boards[2].items
-            // const allTasks = [...state.tasks]
             const allTasks = [...quequeTasks, ...inProgressTasks, ...doneTasks,]
-            localStorage.setItem('Tasks', JSON.stringify(allTasks))
+            localStorage.setItem(`${action.payload}`, JSON.stringify(allTasks))
         },
         setClear(state){
             state.clear = !state.clear
-        }
-    
-
+        },    
     }
 
 },

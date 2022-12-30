@@ -3,12 +3,10 @@ import styled from 'styled-components'
 import { IheaderConstructorProps } from '../../interfaces/IHeaderConstructorProps'
 import Button from '../Button'
 import Input from '../Input'
-import { IProjectProps } from './../../interfaces/IProjectProps';
 import { useAppDispatch } from './../../hooks/redux';
 import { projectsSlice } from '../../store/reducers/projectsSlice'
 import { ITask } from './../../interfaces/ITask';
 import FlexContainer from '../FlexContainer'
-import { ITaskInfo } from './../../interfaces/ITaskInfo';
 
 const StyledConstructor = styled.div`
     display: flex;
@@ -18,29 +16,21 @@ const StyledConstructor = styled.div`
     gap: 20px;
 `
 const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProject}) => {
+    const dispatch = useAppDispatch()
     const [title, setTitle] = useState<string>('')
     const [subtitle, setSubtitle] = useState<string>('')
     let currentRadioValue:string = "green";
 
-    const dispatch = useAppDispatch()
-    
     const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value)
     }
     const subtitleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSubtitle(e.target.value)
     }
-
     const handleRadioChange = (value:string) => {
         currentRadioValue = value
         return currentRadioValue
     };
-
-    const addTask = (item:ITask) => {
-        // dispatch(projectsSlice.actions.addTask(item))
-        dispatch(projectsSlice.actions.aaddTask(item))
-        dispatch(projectsSlice.actions.setBoardTasksToLocal())
-    }
 
     const clickHandler = () => {
         const newTask:ITask = {
@@ -52,6 +42,10 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
             status: 'queque',
             creationDate: Date(),
             doneDate: null
+        }
+        const addTask = (item:ITask) => {
+            dispatch(projectsSlice.actions.addTask(item))
+            dispatch(projectsSlice.actions.setBoardTasksToLocal(newTask.projectId))
         }
         setVisible()
         addTask(newTask)

@@ -1,11 +1,8 @@
 import React from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { projectsSlice } from './../../store/reducers/projectsSlice';
+import { useParams } from 'react-router-dom'
 import { IProjectProps } from './../../interfaces/IProjectProps';
 import FlexContainer from '../FlexContainer';
 import ProjectHeader from './../ProjectHeader';
-import Header from '../Header';
 import ColumsWrapper from '../ColumsWrapper';
 
 interface ProjectPageParams {
@@ -14,9 +11,6 @@ interface ProjectPageParams {
 
 const ProjectPage = () => {
   const params = useParams<ProjectPageParams | any>()
-
-  console.log(params.id)
-
   const projects:IProjectProps[] = JSON.parse(localStorage.getItem('Projects')!)
   const currentProject = projects.find(item => item.id == params.id)
   
