@@ -12,9 +12,12 @@ import { useProjects } from './../../hooks/useProjects';
 const ProjectsPage = () => {
   const dispatch = useAppDispatch()
   const projects = useAppSelector(state => state.projectsReducer.projects)
+  const boards = useAppSelector(state => state.projectsReducer.boards)
   useEffect( () => {
     dispatch(projectsSlice.actions.getFromLocalStorage())
   }, [])
+
+  
   const [filter, setFilter] = useState({query: ''})
   const searchedProjects = useProjects(projects, filter.query)
 

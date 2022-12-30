@@ -37,6 +37,7 @@ const HeaderConstructor: FC<IheaderConstructorProps> = ({setVisible, currentProj
     };
 
     const addTask = (item:ITask) => {
+        // dispatch(projectsSlice.actions.addTask(item))
         dispatch(projectsSlice.actions.aaddTask(item))
         dispatch(projectsSlice.actions.setBoardTasksToLocal())
     }
